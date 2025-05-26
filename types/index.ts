@@ -5,7 +5,7 @@
 //   accountId: string;
 // };
 
-enum Subject {
+export enum Subject {
   maths = "maths",
   language = "language",
   science = "science",
@@ -17,13 +17,13 @@ enum Subject {
   business = "business",
 }
 
-type Companion = Models.DocumentList<Models.Document> & {
-  $id: string;
+export type Companion ={
+  id: string;
   name: string;
-  subject: Subject;
+  subject: string;
   topic: string;
   duration: number;
-  bookmarked: boolean;
+  bookmarked?: boolean;
 };
 
 interface CreateCompanion {
