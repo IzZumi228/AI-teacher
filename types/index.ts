@@ -35,7 +35,7 @@ export interface CreateCompanion {
   duration: number;
 }
 
-interface GetAllCompanions {
+export interface GetAllCompanions {
   limit?: number;
   page?: number;
   subject?: string | string[];
@@ -54,7 +54,7 @@ interface CreateUser {
   accountId: string;
 }
 
-interface SearchParams {
+export interface SearchParams {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
