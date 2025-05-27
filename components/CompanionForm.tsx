@@ -5,7 +5,6 @@ import { z } from "zod"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -24,6 +23,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "./ui/button";
 import { subjects } from "@/constants";
 import { Textarea } from "./ui/textarea";
+import { createCompanion } from "@/lib/actions/companio.actions";
+import { redirect } from "next/navigation";
 
 
 const formSchema = z.object({
@@ -50,9 +51,15 @@ const CompanionForm = () => {
         },
     })
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        const companion = await createCompanion(values)
 
-        console.log(values)
+        if (companion){
+            redirect(`/companions/${companion.id}`)
+        } else {
+            console.log("Failed to create companion");
+            redirect("/")
+        }
     }
 
     return (

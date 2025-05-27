@@ -26,7 +26,7 @@ export type Companion ={
   bookmarked?: boolean;
 };
 
-interface CreateCompanion {
+export interface CreateCompanion {
   name: string;
   subject: string;
   topic: string;
