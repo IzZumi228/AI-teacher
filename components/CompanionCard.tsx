@@ -1,5 +1,7 @@
+import { addBookmark, removeBookmark } from '@/lib/actions/companio.actions';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react'
 
 interface CompanionCardProps {
@@ -9,10 +11,23 @@ interface CompanionCardProps {
     subject: string;
     duration: number;
     color: string;
+    bookmarked: boolean;
 }
 
 
-const CompanionCard = ({ id, name, topic, subject, duration, color }: CompanionCardProps) => {
+
+
+const CompanionCard = ({ id, name, topic, subject, duration, color, bookmarked }: CompanionCardProps) => {
+    const pathname = usePathname();
+
+    const handleBookmark = async () => {
+        if (bookmarked) {
+            await removeBookmark(id, pathname);
+        } else {
+            await addBookmark(id, pathname);
+        }
+    };
+
     return (
         <article className='companion-card' style={{ backgroundColor: color }}>
             <div className='flex justify-between items-center'>
