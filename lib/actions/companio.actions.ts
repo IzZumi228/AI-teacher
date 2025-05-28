@@ -1,6 +1,6 @@
 "use server";
 
-import { CreateCompanion, GetAllCompanions } from "@/types";
+import { Companion, CreateCompanion, GetAllCompanions } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 import { createSupabaseClient } from "../supabase";
 
@@ -20,7 +20,7 @@ export const createCompanion = async (formData: CreateCompanion) => {
 }
 
 export const getAllCompanions = async({limit= 10, page=1, subject, topic} : GetAllCompanions) => {
-    "Creationg database request??"
+    console.log("Creationg database request??", {limit, page, subject, topic});
     const supabase = createSupabaseClient();
 
     let query = supabase.from("companions").select();
@@ -44,4 +44,20 @@ export const getAllCompanions = async({limit= 10, page=1, subject, topic} : GetA
 
     return companions;
     
+}
+
+
+export const getCompanion = async (id: string) => {
+    const supabase = createSupabaseClient();
+    const {data, error} = await supabase
+        .from("companions")
+        .select()
+        .eq("id", id)
+    
+        if (error) {
+            console.error("Error fetching companion:", error);
+            throw new Error(error.message || "Failed to fetch companion");
+        } 
+        
+        return data[0] as Companion;
 }

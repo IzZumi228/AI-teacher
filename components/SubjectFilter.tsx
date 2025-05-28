@@ -33,7 +33,7 @@ const SubjectFilter = () => {
                 value: subject,
             });
         }
-        router.push(newUrl, { scroll: false });
+        router.push(newUrl, { scroll: false }); 
     }, [subject]);
 
     return (
