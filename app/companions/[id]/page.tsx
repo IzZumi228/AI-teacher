@@ -14,6 +14,7 @@ interface CompanionSessionPageProps {
 const CompanionSession = async ({ params }: CompanionSessionPageProps) => {
   const { id } = await params;
   const companion = await getCompanion(id);
+  const { name, subject, title, topic, duration } = companion;
   const user = await currentUser()
 
   if (!user) {
@@ -49,10 +50,11 @@ const CompanionSession = async ({ params }: CompanionSessionPageProps) => {
           {companion.duration} minutes
         </div>
       </article>
-      <CompanionComponent 
-        companion={companion}
-        userName={user.firstName || "User"}
-        userImage={user.imageUrl}
+      <CompanionComponent
+        {...companion}
+        companionId={id}
+        userName={user.firstName!}
+        userImage={user.imageUrl!}
       />
     </main>
   )

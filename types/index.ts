@@ -66,12 +66,12 @@ interface Avatar {
 }
 
 
-interface SavedMessage {
+export interface SavedMessage {
   role: "user" | "system" | "assistant";
   content: string;
 }
 
-interface CompanionComponentProps {
+export interface CompanionComponentProps {
   companionId: string;
   subject: string;
   topic: string;
