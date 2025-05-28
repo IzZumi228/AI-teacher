@@ -7,6 +7,7 @@ import Image from "next/image";
 import Lottie, {LottieRefCurrentProps} from "lottie-react";
 import soundwaves from '@/constants/soundwaves.json'
 import { CompanionComponentProps, SavedMessage } from '@/types';
+import { addToSessionHistory } from '@/lib/actions/companio.actions';
 
 enum CallStatus {
     INACTIVE = 'INACTIVE',
@@ -38,6 +39,7 @@ const CompanionComponent = ({ companionId, subject, topic, name, userName, userI
 
         const onCallEnd = () => {
             setCallStatus(CallStatus.FINISHED);
+            addToSessionHistory(companionId);
         }
 
         const onMessage = (message: Message) => {
