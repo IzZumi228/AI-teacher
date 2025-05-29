@@ -4,6 +4,7 @@ import { Companion, CreateCompanion, GetAllCompanions } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 import { createSupabaseClient } from "../supabase";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export const createCompanion = async (formData: CreateCompanion) => {
     const { userId: author } = await auth();
@@ -21,17 +22,28 @@ export const createCompanion = async (formData: CreateCompanion) => {
 }
 
 export const getAllCompanions = async ({ limit = 10, page = 1, subject, topic }: GetAllCompanions) => {
+    const { userId } = await auth();
+
+    if (!userId) {
+        redirect("/sign-in");
+    }
+
     const supabase = createSupabaseClient();
 
-    let query = supabase.from("companions").select().order("created_at", {ascending: false});
+    let query = supabase
+        .from("companions")
+        .select()
+        .eq("author", userId)
+        .order("created_at", { ascending: false });
 
     if (subject && topic) {
-        query = query.ilike("subject", `%${subject}%`)
-            .or(`topic.ilike.%${topic}%, name.ilike.%${topic}%`)
+        query = query
+            .ilike("subject", `%${subject}%`)
+            .or(`topic.ilike.%${topic}%, name.ilike.%${topic}%`);
     } else if (subject) {
         query = query.ilike("subject", `%${subject}%`);
     } else if (topic) {
-        query = query.or(`topic.ilike.%${topic}%, name.ilike.%${topic}%`)
+        query = query.or(`topic.ilike.%${topic}%, name.ilike.%${topic}%`);
     }
 
     query = query.range((page - 1) * limit, page * limit - 1);
@@ -43,8 +55,7 @@ export const getAllCompanions = async ({ limit = 10, page = 1, subject, topic }:
     }
 
     return companions;
-
-}
+};
 
 
 export const getCompanion = async (id: string) => {
