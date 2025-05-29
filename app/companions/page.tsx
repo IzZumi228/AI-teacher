@@ -13,9 +13,10 @@ const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
   const subject = filters.subject ? filters.subject : '';
   const topic = filters?.topic ? filters.topic : '';
 
-  const companions = await getAllCompanions({subject, topic})
+  const companions = await getAllCompanions({ subject, topic })
 
-  console.log("Companions:", companions);
+
+
 
   return (
     <main>
@@ -27,13 +28,31 @@ const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
         </div>
       </section>
       <section className="companions-grid">
-        {companions.map((companion) => (
-          <CompanionCard 
-            key={companion.id}
-            {...companion}
-            color={getSubjectColor(companion.subject)}
-          />
-        ))}
+        {companions.map(companion => {
+          if (companion.bookmarked) {
+            return (
+              <CompanionCard
+                key={companion.id}
+                {...companion}
+                color={getSubjectColor(companion.subject)}
+              />
+            );
+          }
+          return null; 
+        })}
+
+        {companions.map(companion => {
+          if (!companion.bookmarked) {
+            return (
+              <CompanionCard
+                key={companion.id}
+                {...companion}
+                color={getSubjectColor(companion.subject)}
+              />
+            );
+          }
+          return null; 
+        })}
       </section>
     </main>
   )

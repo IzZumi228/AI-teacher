@@ -1,3 +1,5 @@
+"use client";
+
 import { addBookmark, removeBookmark } from '@/lib/actions/companio.actions';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -34,8 +36,8 @@ const CompanionCard = ({ id, name, topic, subject, duration, color, bookmarked }
                 <div className='subject-badge'>
                     {subject}
                 </div>
-                <button className='companion-bookmark'>
-                    <Image src={"/icons/bookmark.svg"} alt='bookmark' width={12.5} height={15} />
+                <button className='companion-bookmark' onClick={handleBookmark}>
+                    <Image src={bookmarked ? "/icons/bookmark-filled.svg" : "/icons/bookmark.svg"} alt='bookmark' width={12.5} height={15} />
                 </button>
             </div>
 
