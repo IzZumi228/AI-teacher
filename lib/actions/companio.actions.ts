@@ -21,7 +21,6 @@ export const createCompanion = async (formData: CreateCompanion) => {
 }
 
 export const getAllCompanions = async ({ limit = 10, page = 1, subject, topic }: GetAllCompanions) => {
-    console.log("Creationg database request??", { limit, page, subject, topic });
     const supabase = createSupabaseClient();
 
     let query = supabase.from("companions").select().order("created_at", {ascending: false});
@@ -123,13 +122,10 @@ export const newCompanionPermissions = async () => {
 
 
     if (has({ plan: 'pro_companion' })) {
-        console.log("I have prooo")
         return true;
     } else if (has({ feature: "3_active_companions" })) {
-        console.log("I have basiic")
         limit = 3;
     } else if (has({ feature: "10_active_companions" })) {
-        console.log("I have coreee")
         limit = 10;
     }
 

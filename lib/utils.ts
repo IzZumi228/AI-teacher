@@ -7,7 +7,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getSubjectColor = (subject: string) => {
-  console.log("getSubjectColor", subject);
   return subjectsColors[subject as keyof typeof subjectsColors];
 };
 
