@@ -1,6 +1,6 @@
 "use client";
 
-import { addBookmark, removeBookmark } from '@/lib/actions/companio.actions';
+import { addBookmark, createFromTemplate, removeBookmark } from '@/lib/actions/companio.actions';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -13,13 +13,14 @@ interface CompanionCardProps {
     subject: string;
     duration: number;
     color: string;
-    bookmarked: boolean;
+    bookmarked?: boolean;
+    starter?: boolean;
 }
 
 
 
 
-const CompanionCard = ({ id, name, topic, subject, duration, color, bookmarked }: CompanionCardProps) => {
+const CompanionCard = ({ id, name, topic, subject, duration, color, bookmarked, starter }: CompanionCardProps) => {
     const pathname = usePathname();
 
     const handleBookmark = async () => {
@@ -30,15 +31,21 @@ const CompanionCard = ({ id, name, topic, subject, duration, color, bookmarked }
         }
     };
 
+    const handleCreateFromTemplate = async () => {
+        createFromTemplate(name, subject, topic,  duration, bookmarked)
+    }
+
     return (
         <article className='companion-card' style={{ backgroundColor: color }}>
             <div className='flex justify-between items-center'>
                 <div className='subject-badge'>
                     {subject}
                 </div>
-                <button className='companion-bookmark' onClick={handleBookmark}>
-                    <Image src={bookmarked ? "/icons/bookmark-filled.svg" : "/icons/bookmark.svg"} alt='bookmark' width={12.5} height={15} />
-                </button>
+                {!starter && (
+                    <button className='companion-bookmark' onClick={handleBookmark}>
+                        <Image src={bookmarked ? "/icons/bookmark-filled.svg" : "/icons/bookmark.svg"} alt='bookmark' width={12.5} height={15} />
+                    </button>
+                )}
             </div>
 
             <h2 className='text-2xl font-bold'>{name}</h2>
@@ -54,11 +61,17 @@ const CompanionCard = ({ id, name, topic, subject, duration, color, bookmarked }
             </div>
 
 
-            <Link href={`/companions/${id}`} className='w-full'>
-                <button className='btn-primary w-full justify-center'>
+            {starter ? (
+                <button className='btn-primary w-full justify-center' onClick={handleCreateFromTemplate}>
                     Launch Lesson
                 </button>
-            </Link>
+            ) : (
+                <Link href={`/companions/${id}`} className='w-full'>
+                    <button className='btn-primary w-full justify-center'>
+                        Launch Lesson
+                    </button>
+                </Link>
+            )}
         </article>
     )
 }

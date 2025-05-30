@@ -21,7 +21,7 @@ export const voices = {
   female: { casual: "ZIlrSGI4jZqobxRKprJz", formal: "sarah" },
 };
 
-export const recentSessions = [
+export const popularCompanions = [
   {
     id: "1",
     subject: "science",
@@ -39,35 +39,11 @@ export const recentSessions = [
     color: "#FFDA6E",
   },
   {
-    id: "3",
-    subject: "language",
-    name: "Verba the Vocabulary Builder",
-    topic: "English Literature",
-    duration: 30,
-    color: "#BDE7FF",
-  },
-  {
-    id: "4",
-    subject: "coding",
-    name: "Codey the Logic Hacker",
-    topic: "Intro to If-Else Statements",
-    duration: 45,
-    color: "#FFC8E4",
-  },
-  {
     id: "5",
     subject: "history",
     name: "Memo, the Memory Keeper",
     topic: "World Wars: Causes & Consequences",
     duration: 15,
     color: "#FFECC8",
-  },
-  {
-    id: "6",
-    subject: "economics",
-    name: "The Market Maestro",
-    topic: "The Basics of Supply & Demand",
-    duration: 10,
-    color: "#C8FFDF",
   },
 ];

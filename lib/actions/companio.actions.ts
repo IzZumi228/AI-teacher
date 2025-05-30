@@ -1,6 +1,6 @@
 "use server";
 
-import { Companion, CreateCompanion, GetAllCompanions } from "@/types";
+import { CreateCompanion, GetAllCompanions } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 import { createSupabaseClient } from "../supabase";
 import { revalidatePath } from "next/cache";
@@ -224,3 +224,40 @@ export const getBookmarkedCompanions = async (userId: string) => {
     // We don't need the bookmarks data, so we return only the companions
     return data.map(({ companions }) => companions);
 };
+
+export const createFromTemplate = async (name: string, subject: string, topic: string,  duration: number, bookmarked?: boolean) => {
+    const { userId: author } = await auth();
+    const supabase = createSupabaseClient();
+
+    let voice = "male"
+    let style = "casual"
+
+    if (subject === "science") {
+        voice = "female"
+        style = "casual"
+    }
+
+    if (subject === "history") {
+        style = "formal"
+    } 
+
+    const { data, error } = await supabase
+        .from("companions")
+        .insert({    
+            name: name,
+            subject: subject,
+            topic: topic,
+            style: style,
+            voice: voice,
+            duration: duration,
+            bookmarked: bookmarked || false ,
+            author: author
+        })
+        .select();
+
+    if (error || !data) {
+        throw new Error(error.message || "Failed to create a companion");
+    }
+
+    redirect(`/companions/${data[0].id}`)
+}
